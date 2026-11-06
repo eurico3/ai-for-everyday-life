@@ -16,7 +16,7 @@ A structured prompt that turns Claude into a **decision-structuring partner, not
 | **Defining the task** | Concrete, numbered actions |
 | **Specifying rules** | Tone, format, an example — and "don't decide for me" |
 
-The first answer is then refined through **iteration**: specific feedback, error correction and follow-up with new information.
+The first answer is then refined through **iteration**: specific feedback, error correction and follow-up with new information. Finally, the same prompt was run **three times** to test how consistent the results are.
 
 ## The scenario (fictional)
 
@@ -94,7 +94,17 @@ With this information, redo the analysis using Reading B (gross salaries) and gi
 2. Only the updated scenarios table and the 3 most important milestones.
 ```
 
-## What happened
+## Full outputs
+
+The complete, unedited responses from Claude (in the original Portuguese) are available here:
+
+| File | Content |
+|---|---|
+| [run-1-output.md](run-1-output.md) | Run 1: initial response, correction and follow-up |
+| [run-2-output.md](run-2-output.md) | Run 2: initial response only |
+| [run-3-output.md](run-3-output.md) | Run 3: initial response only |
+
+## What happened (Run 1)
 
 **Initial response.** Claude delivered every requested section: runway calculation, three 12-month scenarios, pros and cons, hidden risks, objective milestones and self-reflection questions. It also flagged missing information on its own (gross vs. net salary) and ran the numbers both ways. It surfaced risks most people would miss, such as losing access to FGTS when resigning, health insurance waiting periods and a tax rule that can more than double the tax rate for small service companies.
 
@@ -111,6 +121,35 @@ With this information, redo the analysis using Reading B (gross salaries) and gi
 
 Top milestones before quitting: contracts of at least 6 months with clients, R$ 4,000/month of recurring revenue for 3 consecutive months while still employed, and an average ticket of at least R$ 1,000 per client.
 
+## Consistency test: same prompt, three runs
+
+The same initial prompt was run in three separate chats to see what changes.
+
+| | Run 1 | Run 2 | Run 3 |
+|---|---|---|---|
+| Structure (6 requested sections) | ✅ | ✅ | ✅ |
+| Estimated monthly fixed cost | R$ 12,980 | R$ 13,600 | R$ 13,200 |
+| Health insurance assumption | R$ 1,500 | R$ 2,000 | R$ 1,800 |
+| Tax assumption | 6% | 6% | 15% (taxes + social security) |
+| Savings runway (adjusted) | 8.8 months | 7.9 months | 8.2 months |
+| Runway keeping a R$ 15,000 emergency floor | ~6 months | 5.2 months | 5.5 months |
+| Revenue needed to break even | R$ 7,430 | R$ 8,100 | R$ 8,500 |
+| Clients needed at current ticket | ~11 | ~12 | ~13 |
+| Pessimistic: savings run out | Month 9 | Month 9 | Month 9 |
+| Realistic scenario | Break-even in month 10 | Almost breaks even | Savings run out in month 12 |
+| Optimistic break-even | Month 7 | Month 7 | ~Month 9 |
+| Calculation method | Quarter by quarter | Quarter by quarter | Annual averages |
+| Calculation errors | 3 (fixed through iteration) | None (one text contradiction) | None |
+| Main conclusion | Same | Same | Same |
+
+**What stayed the same:** structure, core risks, savings runway (~8–9 months), the pessimistic scenario (savings run out in month 9 in all three runs) and the main conclusion.
+
+**What changed:** the assumptions the AI had to estimate (health insurance, taxes, growth pace). This made the realistic scenario swing from "breaks even in month 10" to "savings run out in month 12". The calculation method also changed between runs.
+
+**Core risks found in all three runs:** no access to FGTS when resigning (and the mutual-agreement alternative), health insurance waiting periods, tax regime choice, the family depending on a single formal income, high churn among small clients, unpaid time spent selling, low average ticket and delivery capacity, non-compete clauses and reduced social security protection.
+
+**Bonus:** each run surfaced at least one useful idea the others missed. Run 3, for example, suggested the cheapest test of all: asking the 3 current clients whether they would pay more for more availability.
+
 ## Lessons learned
 
 1. **Real numbers beat generic questions.** Concrete context produced concrete scenarios instead of motivational advice.
@@ -118,4 +157,16 @@ Top milestones before quitting: contracts of at least 6 months with clients, R$ 
 3. **Always check the math.** AI can make arithmetic slips; verification is part of the process.
 4. **Specific feedback works.** Saying what was good *and* pointing to the exact error led to a precise correction.
 5. **"Don't decide for me" keeps the human in charge.** Claude structured the decision without taking it.
-6. **Iteration adds value.** The final answer was shorter, more accurate and
+6. **Iteration adds value.** The final answer was shorter, more accurate and more useful than the first one.
+7. **Same prompt, different runs.** Structure and conclusions are stable, but numbers vary with the assumptions and methods the AI chooses. Supplying key assumptions and specifying the method makes results more consistent.
+8. **For important decisions, run it more than once.** Each run surfaced different risks and ideas, so multiple runs give a fuller picture.
+
+## How to reuse
+
+Copy the initial prompt and replace the **CONTEXT** section with your own situation: a job offer, buying vs. renting, a career change. Keep the structure, the rules and the iteration steps.
+
+To get more consistent results:
+- Provide the key assumptions yourself (for example, the real cost of health insurance and whether salaries are gross or net).
+- Specify the calculation method (for example, "calculate month by month").
+
+> Note: AI responses vary between runs. Your output will differ in wording and assumptions, but the structure and main conclusions should be similar.
